@@ -1,0 +1,103 @@
+{
+  "projectName": "LocalSphere",
+  "testingDimension": "Value proposition",
+  "targetAudience": "Startup founders/CTOs at companies with 5-50 remote employees",
+  "primaryAction": "Request demo call",
+  "variants": [
+    {
+      "id": "timezone-freedom",
+      "name": "Timezone Freedom",
+      "headline": "Never Wake Up at 5 AM for Another Meeting",
+      "subheadline": "Finally work in your timezone while staying perfectly synced with global teams",
+      "valueProposition": "Timezone coordination and automatic sync",
+      "coreMessage": "Work normal hours, stay connected",
+      "primaryFeatures": [
+        "Never Wake Up at 5 AM for Another Meeting - timezone coordination and automatic sync",
+        "Find Any Decision, Update, or File in Seconds - instant search across all channels",
+        "One Inbox for Everything - unified communication command center"
+      ],
+      "cta": "Request Demo",
+      "focusArea": "Time zone pain relief"
+    },
+    {
+      "id": "information-findability", 
+      "name": "Information Findability",
+      "headline": "Find Any Decision, Update, or File in Seconds",
+      "subheadline": "Stop digging through Slack threads, email chains, and shared drives forever",
+      "valueProposition": "Universal information findability",
+      "coreMessage": "Instant access to everything",
+      "primaryFeatures": [
+        "Find Any Decision, Update, or File in Seconds - instant search across all channels",
+        "Never Wake Up at 5 AM for Another Meeting - timezone coordination and automatic sync", 
+        "One Inbox for Everything - unified communication command center"
+      ],
+      "cta": "Request Demo",
+      "focusArea": "Information accessibility"
+    },
+    {
+      "id": "unified-productivity",
+      "name": "Unified Productivity", 
+      "headline": "One Inbox for Everything—Email, Chat, Tasks, All of It",
+      "subheadline": "No more juggling 10 different apps or missing important messages",
+      "valueProposition": "Single application productivity",
+      "coreMessage": "Everything in one place",
+      "primaryFeatures": [
+        "One Inbox for Everything - unified communication command center",
+        "Find Any Decision, Update, or File in Seconds - instant search across all channels",
+        "Never Wake Up at 5 AM for Another Meeting - timezone coordination and automatic sync"
+      ],
+      "cta": "Request Demo",
+      "focusArea": "Tool consolidation"
+    }
+  ],
+  "commonElements": {
+    "pricing": {
+      "starter": {
+        "name": "Starter Plan",
+        "monthlyPrice": "$449",
+        "annualPrice": "$382",
+        "teamSize": "Up to 10 employees",
+        "cta": "Start Free Trial"
+      },
+      "professional": {
+        "name": "Professional Plan",
+        "monthlyPrice": "$4,999", 
+        "annualPrice": "$4,249",
+        "teamSize": "Up to 50 employees",
+        "cta": "Request Demo"
+      },
+      "enterprise": {
+        "name": "Enterprise Plan",
+        "monthlyPrice": "Contact Us",
+        "annualPrice": "Contact Us",
+        "teamSize": "50+ employees", 
+        "cta": "Contact Sales"
+      }
+    },
+    "trustElements": [
+      "Google Cloud Platform technology partnership",
+      "30-day free trial period",
+      "Money-back guarantee (early adopters, terms TBD)"
+    ],
+    "painPoints": [
+      "Remote workers forced to work odd hours to accommodate coworkers' time zones",
+      "Information fragmentation - not knowing where to find needed information across multiple tools", 
+      "Being blocked waiting for coworkers in other time zones to become available"
+    ],
+    "differentiators": [
+      "Universal information findability across all communication channels",
+      "AI Twin ensures work transparency regardless of working hours",
+      "Single application productivity vs fragmented tool switching"
+    ]
+  },
+  "successMetrics": {
+    "primary": "demo_request_rate",
+    "threshold": "2%",
+    "strongValidation": "5%",
+    "secondary": [
+      "email_capture_rate",
+      "pricing_page_engagement", 
+      "feature_section_clicks"
+    ]
+  }
+}

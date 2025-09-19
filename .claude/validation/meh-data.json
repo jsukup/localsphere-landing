@@ -1,0 +1,173 @@
+{
+  "startupType": "B2B SaaS",
+  "targetAudienceRefined": "startups and small businesses with remote employees around the world",
+  "mehResponses": {
+    "q1_startupType": {
+      "question": "What type of startup are you building?",
+      "answer": "B2B SaaS designed for startups and small businesses with remote employees around the world",
+      "value": "B2B SaaS",
+      "answered": true
+    },
+    "q2_targetAudience": {
+      "question": "Who is your primary target audience?",
+      "answer": "Startup founders/CTOs at companies with 5-50 remote employees which could include Small business owners managing remote teams globally",
+      "value": "Startup founders/CTOs at companies with 5-50 remote employees",
+      "answered": true
+    },
+    "q3_problemDescription": {
+      "question": "What specific problem does your solution solve?",
+      "answer": "Remote workers having to work odd hours to accommodate coworkers' time zones. LocalSphere solves this with: 1) Complete communication platform (email, chat, project management, knowledge sharing) in one place, 2) AI Twin/Digital Double that indexes all employee actions and communications for transparent asynchronous work, 3) AI-powered knowledge base that stays current and eliminates app switching.",
+      "problemDescription": "Remote timezone coordination forcing odd work hours + fragmented communication tools",
+      "problemFrequency": "Daily",
+      "problemSeverityScore": 10,
+      "answered": true
+    },
+    "q4_currentSolutions": {
+      "question": "What do people currently use to solve this problem?",
+      "answer": "Variety of fragmented tools like Slack + Zoom + Email + Notion + Asana, Microsoft Teams + SharePoint, Discord + GitHub + Google Workspace. No specific stack used by majority of companies.",
+      "currentSolutions": "Fragmented tool combinations (Slack/Teams + email + project tools + docs)",
+      "currentPainPoints": "Not knowing where to find information when needed, breaking workflow to search, being blocked waiting for coworkers in other timezones to become available",
+      "answered": true
+    },
+    "q5_pricing": {
+      "question": "What would you expect people to pay for your solution?",
+      "answer": "Tiered pricing: 1) Starter Plan: Teams up to 10 employees, $449/month, 2) Professional Plan: Teams up to 50 employees, $4,999/month, 3) Enterprise Plan: Teams >50 employees, Contact Us (estimated $20/additional employee/month)",
+      "expectedPricing": "Tiered: $449/month (up to 10), $4,999/month (up to 50), Enterprise contact",
+      "idealPricing": "$4,999/month Professional Plan",
+      "answered": true
+    },
+    "q6_testingDimension": {
+      "question": "What's the main thing you want to test about your idea?",
+      "answer": "Value proposition followed by feature appeal",
+      "testingDimension": "Value proposition",
+      "secondaryTesting": "Feature appeal",
+      "answered": true
+    },
+    "q7_targetAction": {
+      "question": "What action would prove people want your solution?",
+      "answer": "Request demo call (shows serious buying intent)",
+      "targetAction": "Request demo call",
+      "commitmentLevel": "High - demo requests indicate serious buying intent",
+      "answered": true
+    },
+    "q8_topPainPoints": {
+      "question": "What are the top 3 pain points your solution addresses?",
+      "answer": "1. Remote workers forced to work odd hours - Having to accommodate coworkers' time zones for meetings and collaboration, 2. Information fragmentation and searchability - Not knowing where to find needed information across multiple tools causing workflow interruptions, 3. Being blocked by timezone delays - Waiting for specific coworkers in other time zones to become available for critical information",
+      "topPainPoints": [
+        "Remote workers forced to work odd hours to accommodate coworkers' time zones", 
+        "Information fragmentation - not knowing where to find needed information across multiple tools",
+        "Being blocked waiting for coworkers in other time zones to become available"
+      ],
+      "answered": true
+    },
+    "q9_costOfInaction": {
+      "question": "What happens if your target audience doesn't solve this problem?",
+      "answer": "Cost of inaction could include: 1. Team burnout and turnover from working odd hours, 2. Productivity delays searching for information, 3. Poor decision-making based off out-of-date information",
+      "costOfInaction": "Team burnout and turnover, productivity delays, poor decision-making from outdated information",
+      "answered": true
+    },
+    "q10_keyDifferentiators": {
+      "question": "What are your 3 key differentiators from existing solutions?",
+      "answer": "1. Never having to wonder where to find the information you need regardless of what channel it was shared on (i.e., email, chat), 2. Confidence that your co-workers will know what you accomplished and what your needs are no matter what hours you work, 3. Improved productivity from working within a single application rather than several",
+      "keyDifferentiators": [
+        "Universal information findability across all communication channels",
+        "AI Twin ensures work transparency regardless of working hours",
+        "Single application productivity vs fragmented tool switching"
+      ],
+      "answered": true
+    },
+    "q11_solutionOneLiner": {
+      "question": "How would you explain your solution in one sentence?",
+      "answer": "We help remote-first businesses achieve heightened productivity asynchronously by consolidating internal and external communications into a cohesive platform orchestrated by AI",
+      "solutionOneLiner": "We help remote-first businesses achieve heightened productivity asynchronously by consolidating internal and external communications into a cohesive platform orchestrated by AI",
+      "answered": true
+    },
+    "q12_topFeatures": {
+      "question": "List your top 6-8 features in priority order",
+      "answer": "1. Never Wake Up at 5 AM for Another Meeting - timezone coordination and automatic sync, 2. Find Any Decision, Update, or File in Seconds - instant search across all communication channels, 3. Cut Your Meetings in Half, Keep All the Value - AI meeting attendance and summaries, 4. One Inbox for Everything - unified communication command center, 5. Work Your Own Hours Without Leaving Anyone Hanging - maintain presence and team updates, 6. Your Communication, Automated Your Way - handle 60% of routine communication automatically",
+      "topFeatures": [
+        "Never Wake Up at 5 AM for Another Meeting - timezone coordination and automatic sync",
+        "Find Any Decision, Update, or File in Seconds - instant search across all channels", 
+        "Cut Your Meetings in Half, Keep All the Value - AI meeting attendance and summaries",
+        "One Inbox for Everything - unified communication command center",
+        "Work Your Own Hours Without Leaving Anyone Hanging - maintain presence and updates",
+        "Your Communication, Automated Your Way - automate 60% of routine communication"
+      ],
+      "answered": true
+    },
+    "q13_mvpFeatures": {
+      "question": "Which 3 features are absolute must-haves for your MVP?",
+      "answer": "Features 1, 2, and 4 from Q12",
+      "mvpFeatures": [
+        "Never Wake Up at 5 AM for Another Meeting - timezone coordination and automatic sync",
+        "Find Any Decision, Update, or File in Seconds - instant search across all channels",
+        "One Inbox for Everything - unified communication command center"
+      ],
+      "answered": true
+    },
+    "q14_pricingModel": {
+      "question": "What pricing model do you prefer?",
+      "answer": "Monthly subscription with annual plans that include 15% discount for each tier",
+      "pricingModel": "Monthly and Annual subscription",
+      "annualDiscount": "15%",
+      "answered": true
+    },
+    "q15_pricingTiers": {
+      "question": "How many pricing tiers do you want to test?",
+      "answer": "Use the 3-tier structure: Starter ($449/month, up to 10 employees), Professional ($4,999/month, up to 50 employees), Enterprise (Contact Us, >50 employees)",
+      "pricingTiers": 3,
+      "tierDetails": [
+        {
+          "name": "Starter Plan",
+          "monthlyPrice": "$449",
+          "annualPrice": "$382", 
+          "teamSize": "Up to 10 employees",
+          "cta": "Start Free Trial"
+        },
+        {
+          "name": "Professional Plan", 
+          "monthlyPrice": "$4,999",
+          "annualPrice": "$4,249",
+          "teamSize": "Up to 50 employees",
+          "cta": "Request Demo"
+        },
+        {
+          "name": "Enterprise Plan",
+          "monthlyPrice": "Contact Us",
+          "annualPrice": "Contact Us", 
+          "teamSize": "50+ employees",
+          "cta": "Contact Sales"
+        }
+      ],
+      "answered": true
+    },
+    "q16_trustElements": {
+      "question": "What trust elements can you leverage?",
+      "answer": "GCP technology partnership for deployments, Money-back guarantees for early stage adopters (criteria to be legally vetted), Free trial period of one month",
+      "trustElements": [
+        "Google Cloud Platform technology partnership",
+        "30-day free trial period", 
+        "Money-back guarantee (early adopters, terms TBD)"
+      ],
+      "answered": true
+    },
+    "q17_socialProofMetrics": {
+      "question": "Do you have any existing metrics to highlight?",
+      "answer": "I have no existing metrics",
+      "socialProofMetrics": "No existing metrics - will use aspirational numbers for validation testing",
+      "answered": true
+    },
+    "q18_includeVideo": {
+      "question": "Would you like to include a maker video on your landing page?",
+      "answer": "No",
+      "includeVideo": false,
+      "videoPlacement": null,
+      "answered": true
+    }
+  },
+  "interviewProgress": {
+    "currentQuestion": 18,
+    "totalQuestions": 18,
+    "completed": true
+  }
+}

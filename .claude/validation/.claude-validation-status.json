@@ -1,0 +1,17 @@
+{
+  "id": "localsphere-landing",
+  "projectName": "LocalSphere",
+  "description": "A communication platform designed for remote teams that need solid communication, asynchronously, in a single platform",
+  "started": "2025-09-12T11:59:00.000Z",
+  "lastUpdated": "2025-09-12T11:59:00.000Z",
+  "status": "active",
+  "phase": "initialization",
+  "progress": {
+    "initialization": { "completed": true },
+    "mehInterview": { "completed": false, "answered": 0, "total": 19 },
+    "videoScript": { "required": false, "completed": false },
+    "landingPageGeneration": { "completed": false },
+    "abTestingSetup": { "completed": false },
+    "analytics": { "completed": false }
+  }
+}
