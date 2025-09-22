@@ -187,7 +187,7 @@ export default function VerifyEmailPage({ params }: { params: Promise<{ token: s
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
           >
-            We'll keep you updated on LocalSphere's progress and early access opportunities.
+            We&apos;ll keep you updated on LocalSphere&apos;s progress and early access opportunities.
           </motion.p>
         </motion.div>
       </div>

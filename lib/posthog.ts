@@ -10,23 +10,10 @@ export function initPostHog() {
     posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
       api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.posthog.com',
       
-      // LAUNCH Framework optimizations
-      session_recording: {
-        sampleRate: 0.1, // 10% sampling for free tier
-      },
+      // LAUNCH Framework optimizations - session recording enabled
       
       // Behavioral tracking for fake door testing
-      autocapture: {
-        capture_clicked_text: true,
-        capture_forms: true,
-        css_selector_allowlist: [
-          '[data-testid]',
-          '[data-track]', 
-          'button',
-          'a[href*="signup"]',
-          'input[type="email"]',
-        ]
-      },
+      autocapture: true,
       
       // Privacy compliance
       respect_dnt: true,
@@ -170,10 +157,10 @@ export function calculateCDS(sessionData: Record<string, unknown>) {
   let score = 0
   
   // Engagement Score (25 points max)
-  if (sessionData.ctr_from_ads) score += Math.min(sessionData.ctr_from_ads * 100, 5)
-  if (sessionData.time_on_site) score += Math.min(sessionData.time_on_site / 60, 5) // max 5 for 5+ minutes
-  if (sessionData.scroll_depth) score += Math.min(sessionData.scroll_depth / 20, 5) // max 5 for 100%
-  if (sessionData.pages_per_session) score += Math.min(sessionData.pages_per_session * 2.5, 5)
+  if (sessionData.ctr_from_ads) score += Math.min(Number(sessionData.ctr_from_ads) * 100, 5)
+  if (sessionData.time_on_site) score += Math.min(Number(sessionData.time_on_site) / 60, 5) // max 5 for 5+ minutes
+  if (sessionData.scroll_depth) score += Math.min(Number(sessionData.scroll_depth) / 20, 5) // max 5 for 100%
+  if (sessionData.pages_per_session) score += Math.min(Number(sessionData.pages_per_session) * 2.5, 5)
   if (sessionData.return_visitor) score += 5
   
   // Conversion Score (35 points max) 
