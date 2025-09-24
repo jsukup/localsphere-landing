@@ -12,6 +12,16 @@
 
 # testing
 /coverage
+# validation testing artifacts
+test-*.js
+*test*.js
+debug-*.js
+quick-*.js
+clear-*.js
+run-all-*.js
+*-test-report-*.json
+comprehensive-test-report-*.json
+test-report-*.json
 
 # next.js
 /.next/

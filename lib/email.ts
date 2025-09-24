@@ -58,7 +58,7 @@ export async function sendVerificationEmail(data: EmailVerificationData) {
 
   try {
     const { data: emailResult, error } = await resend.emails.send({
-      from: 'LocalSphere <onboarding@resend.dev>',
+      from: 'LocalSphere <info@localsphere.co>',
       to: [email],
       subject: content.subject,
       html: `

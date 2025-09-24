@@ -205,7 +205,7 @@ export const setupSupabaseSchema = async (): Promise<{ success: boolean; error?:
   try {
     // Note: In production, these would be run as SQL migrations in Supabase dashboard
     // This is a check/verification function
-    const { data, error } = await supabaseAdmin
+    const { error } = await supabaseAdmin
       .from('email_verification')
       .select('count(*)')
       .limit(1);
