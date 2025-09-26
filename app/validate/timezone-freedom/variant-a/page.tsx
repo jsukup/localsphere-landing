@@ -5,6 +5,7 @@ import { ProblemSection } from "@/components/landing/sections/problem-section"
 import { SolutionSection } from "@/components/landing/sections/solution-section" 
 import { FeaturesSection } from "@/components/landing/sections/features-section"
 import { PricingSection } from "@/components/landing/sections/pricing-section"
+import { EmailCaptureCTA } from "@/components/ui/email-capture-cta"
 
 export default function TimezoneFreedомVariantA() {
   const handleCtaClick = () => {
@@ -50,12 +51,7 @@ export default function TimezoneFreedомVariantA() {
           </p>
           
           <div className="max-w-md mx-auto">
-            <button 
-              onClick={handleCtaClick}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold"
-            >
-              Join Waitlist
-            </button>
+            <EmailCaptureCTA variant="timezone-freedom" section="footer" />
           </div>
         </div>
       </footer>
