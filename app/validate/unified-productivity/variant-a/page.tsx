@@ -54,7 +54,7 @@ export default function UnifiedProductivityVariantA() {
               onClick={handleCtaClick}
               className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold"
             >
-              Request Demo - Unify Your Team
+              Join Waitlist
             </button>
           </div>
         </div>

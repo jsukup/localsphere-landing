@@ -18,21 +18,21 @@ interface EmailCaptureCTAProps {
 const variantConfig = {
   "timezone-freedom": {
     primary: "Join Waitlist",
-    secondary: "Get Early Access",
+    secondary: "Join Waitlist",
     placeholder: "Enter your work email",
     colors: "from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700",
     focusColors: "focus:ring-blue-500 border-blue-300"
   },
   "information-findability": {
-    primary: "Sign Up Now", 
-    secondary: "Try It Free",
+    primary: "Join Waitlist", 
+    secondary: "Join Waitlist",
     placeholder: "Your email address",
     colors: "from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700",
     focusColors: "focus:ring-emerald-500 border-emerald-300"
   },
   "unified-productivity": {
-    primary: "Start Free Trial",
-    secondary: "Get Started Today", 
+    primary: "Join Waitlist",
+    secondary: "Join Waitlist", 
     placeholder: "Work email address",
     colors: "from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700",
     focusColors: "focus:ring-purple-500 border-purple-300"

@@ -54,7 +54,7 @@ export default function TimezoneFreedомVariantA() {
               onClick={handleCtaClick}
               className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold"
             >
-              Request Demo - Work Your Hours
+              Join Waitlist
             </button>
           </div>
         </div>
