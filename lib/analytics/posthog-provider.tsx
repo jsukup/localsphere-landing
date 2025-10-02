@@ -1,87 +1,45 @@
 'use client'
 
-import posthog from 'posthog-js'
-import { PostHogProvider as PHProvider } from 'posthog-js/react'
-import { useEffect, useState } from 'react'
+import { PostHogProvider } from 'posthog-js/react'
+import { ReactNode } from 'react'
 
-export function PostHogProvider({ children }: { children: React.ReactNode }) {
-  const [isInitialized, setIsInitialized] = useState(false)
+export function PHProvider({ children }: { children: ReactNode }) {
+  const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
+  const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.posthog.com'
 
-  useEffect(() => {
-    // Only initialize on client side
-    if (typeof window === 'undefined') return
-
-    const key = process.env.NEXT_PUBLIC_POSTHOG_KEY
-    const host = process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.posthog.com'
-
-    if (!key) {
-      console.error('[PostHog] Missing NEXT_PUBLIC_POSTHOG_KEY environment variable')
-      return
-    }
-
-    // Initialize PostHog with proper configuration
-    posthog.init(key, {
-      api_host: host,
-
-      // LAUNCH Framework optimizations
-      autocapture: true,
-      capture_pageview: false, // We'll manually capture with variant data
-      capture_pageleave: true,
-
-      // Privacy compliance
-      respect_dnt: true,
-
-      // Performance
-      loaded: (posthogInstance) => {
-        console.log('[PostHog] Successfully initialized')
-
-        // Set LAUNCH Framework properties
-        const variant = getCookie('localsphere_variant')
-        if (variant) {
-          posthogInstance.register({
-            localsphere_variant: variant,
-            validation_test: true,
-            test_start_date: new Date().toISOString().split('T')[0]
-          })
-          console.log('[PostHog] Registered variant:', variant)
-        }
-
-        setIsInitialized(true)
-      },
-
-      // Debug mode in development
-      debug: process.env.NODE_ENV === 'development',
-    })
-
-    // Ensure events are flushed on page unload
-    const handleBeforeUnload = () => {
-      console.log('[PostHog] Flushing events before unload')
-      posthog.capture('$pageleave')
-    }
-
-    window.addEventListener('beforeunload', handleBeforeUnload)
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-    }
-  }, [])
-
-  // Helper function to get cookies
-  function getCookie(name: string): string | null {
-    if (typeof document === 'undefined') return null
-
-    const value = `; ${document.cookie}`
-    const parts = value.split(`; ${name}=`)
-    if (parts.length === 2) {
-      return parts.pop()?.split(';').shift() || null
-    }
-    return null
+  if (!posthogKey) {
+    console.error('[PostHog] Missing NEXT_PUBLIC_POSTHOG_KEY environment variable')
+    return <>{children}</>
   }
 
-  // Use official PostHogProvider to make posthog available via usePostHog hook
   return (
-    <PHProvider client={posthog}>
+    <PostHogProvider
+      apiKey={posthogKey}
+      options={{
+        api_host: posthogHost,
+        person_profiles: 'identified_only',
+
+        // LAUNCH Framework optimizations
+        autocapture: true,
+        capture_pageview: false, // Manual control for variant tracking
+        capture_pageleave: true,
+
+        // Privacy compliance
+        respect_dnt: true,
+
+        // Debug mode in development
+        debug: process.env.NODE_ENV === 'development',
+
+        // Initialization callback
+        loaded: (posthog) => {
+          console.log('[PostHog] Successfully initialized via official provider')
+          if (process.env.NODE_ENV === 'development') {
+            posthog.debug()
+          }
+        }
+      }}
+    >
       {children}
-    </PHProvider>
+    </PostHogProvider>
   )
 }

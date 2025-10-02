@@ -14,17 +14,32 @@ export default function Home() {
       if (posthog) {
         console.log('[Root Page] Tracking landing page visit')
 
-        // Track landing with all relevant context
-        posthog.capture('landing_page_visit', {
+        // Extract UTM parameters for campaign attribution
+        const urlParams = new URLSearchParams(window.location.search)
+        const utmParams = {
+          utm_source: urlParams.get('utm_source'),
+          utm_medium: urlParams.get('utm_medium'),
+          utm_campaign: urlParams.get('utm_campaign'),
+          utm_content: urlParams.get('utm_content'),
+          utm_term: urlParams.get('utm_term')
+        }
+
+        const eventProperties = {
           source: 'root',
           path: '/',
           timestamp: new Date().toISOString(),
           referrer: document.referrer || 'direct',
-          user_agent: navigator.userAgent
-        })
+          user_agent: navigator.userAgent,
+          ...utmParams,
+          $current_url: window.location.href
+        }
 
-        // CRITICAL: Wait for event to be sent before redirecting
-        await new Promise(resolve => setTimeout(resolve, 500))
+        // Track BOTH standard pageview (for dashboards) AND custom event (for LAUNCH Framework)
+        posthog.capture('$pageview', eventProperties)
+        posthog.capture('landing_page_visit', eventProperties)
+
+        // CRITICAL: Wait longer for events to be sent before redirecting
+        await new Promise(resolve => setTimeout(resolve, 1000))
       }
 
       // Get variant from cookie or let middleware handle assignment

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import { usePostHog } from "posthog-js/react"
+import { useVariantRegistration } from "@/lib/analytics/use-variant-registration"
 import { HeroSection } from "@/components/landing/sections/hero-section"
 import { ProblemSection } from "@/components/landing/sections/problem-section"
 import { SolutionSection } from "@/components/landing/sections/solution-section"
@@ -11,6 +12,9 @@ import { EmailCaptureCTA } from "@/components/ui/email-capture-cta"
 
 export default function TimezoneFreedомVariantA() {
   const posthog = usePostHog()
+
+  // Register variant super properties
+  useVariantRegistration()
 
   useEffect(() => {
     if (!posthog) {
