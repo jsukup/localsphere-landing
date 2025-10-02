@@ -2,48 +2,60 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()
-  
+
   // Handle root path routing to A/B test variants
   if (url.pathname === '/') {
     // Get or set variant cookie
     let variant = request.cookies.get('localsphere_variant')?.value
-    
+    let isNewUser = false
+
     if (!variant) {
+      isNewUser = true
       // Thompson Sampling-inspired variant assignment
       // For initial testing, use equal distribution
       const variants = [
         'timezone-freedom',
-        'information-findability', 
+        'information-findability',
         'unified-productivity'
       ]
-      
+
       variant = variants[Math.floor(Math.random() * variants.length)]
-      
-      // Set cookie for returning users
+
+      // Create response with redirect
       const response = NextResponse.redirect(new URL(`/validate/${variant}/variant-a`, request.url))
+
+      // Set variant cookie for returning users (httpOnly=false so client JS can read it)
       response.cookies.set('localsphere_variant', variant, {
         maxAge: 60 * 60 * 24 * 30, // 30 days
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production'
+        httpOnly: false, // Allow client-side PostHog to read this
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
       })
-      
-      // Track variant assignment
-      response.cookies.set('localsphere_session_id', 
-        crypto.randomUUID(), 
-        {
-          maxAge: 60 * 60 * 24, // 24 hours
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production'
-        }
-      )
-      
+
+      // Generate and set session ID
+      const sessionId = crypto.randomUUID()
+      response.cookies.set('localsphere_session_id', sessionId, {
+        maxAge: 60 * 60 * 24, // 24 hours
+        httpOnly: false, // Allow client-side PostHog to read this
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
+      })
+
+      // Set flag to indicate this is a new user (for PostHog tracking)
+      response.cookies.set('localsphere_new_user', 'true', {
+        maxAge: 10, // Short-lived, just for the next page load
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
+      })
+
       return response
     } else {
       // Returning user - redirect to their assigned variant
       return NextResponse.redirect(new URL(`/validate/${variant}/variant-a`, request.url))
     }
   }
-  
+
   return NextResponse.next()
 }
 

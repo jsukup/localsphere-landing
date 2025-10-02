@@ -1,18 +1,71 @@
 "use client"
 
+import { useEffect } from "react"
 import { HeroSection } from "@/components/landing/sections/hero-section"
 import { ProblemSection } from "@/components/landing/sections/problem-section"
-import { SolutionSection } from "@/components/landing/sections/solution-section" 
+import { SolutionSection } from "@/components/landing/sections/solution-section"
 import { FeaturesSection } from "@/components/landing/sections/features-section"
 import { PricingSection } from "@/components/landing/sections/pricing-section"
 import { EmailCaptureCTA } from "@/components/ui/email-capture-cta"
+import { initPostHog, trackDemoRequest, trackValidationEvent, trackScrollDepth } from "@/lib/posthog"
 
 export default function InformationFindabilityVariantA() {
+  useEffect(() => {
+    // Initialize PostHog for this page
+    const posthog = initPostHog()
+
+    if (posthog) {
+      // Check if this is a new user (from middleware)
+      const isNewUser = document.cookie.includes('localsphere_new_user=true')
+
+      if (isNewUser) {
+        // Track variant assignment for new users
+        trackValidationEvent('variant_assigned', {
+          variant: 'information-findability',
+          assignment_type: 'new_user',
+          source: 'middleware'
+        })
+
+        // Remove the temporary cookie
+        document.cookie = 'localsphere_new_user=; Max-Age=0; path=/;'
+      }
+
+      // Track pageview
+      trackValidationEvent('validation_page_view', {
+        variant: 'information-findability',
+        page: 'variant-a',
+        source: 'validation_landing',
+        is_new_user: isNewUser
+      })
+
+      // Track scroll depth
+      const scrollCheckpoints = new Set<number>()
+
+      const handleScroll = () => {
+        const scrollPercent = Math.round(
+          (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+        )
+
+        const milestones = [25, 50, 75, 100]
+        milestones.forEach(milestone => {
+          if (scrollPercent >= milestone && !scrollCheckpoints.has(milestone)) {
+            scrollCheckpoints.add(milestone)
+            trackScrollDepth('information-findability', milestone)
+          }
+        })
+      }
+
+      window.addEventListener('scroll', handleScroll)
+      return () => window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   const handleCtaClick = () => {
-    // Track demo request event
-    console.log("Demo request clicked - Information Findability Variant A")
-    // In real implementation, this would trigger PostHog event and show demo form
-    alert("Demo request - Information Findability focus")
+    // Track demo request with PostHog
+    trackDemoRequest('information-findability', 'hero')
+
+    // Show demo form (for now, just alert)
+    alert("Demo request tracked! Information Findability variant")
   }
 
 
