@@ -4,11 +4,33 @@ import posthog from 'posthog-js'
 let posthogInstance: typeof posthog | null = null
 
 export function initPostHog() {
-  if (typeof window === 'undefined') return null
+  console.log('[PostHog Init] Starting initialization...')
 
-  if (!posthogInstance && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.posthog.com',
+  if (typeof window === 'undefined') {
+    console.log('[PostHog Init] Window is undefined (SSR), skipping')
+    return null
+  }
+
+  const key = process.env.NEXT_PUBLIC_POSTHOG_KEY
+  const host = process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.posthog.com'
+
+  console.log('[PostHog Init] Environment check:', {
+    hasKey: !!key,
+    keyPrefix: key ? key.substring(0, 8) + '...' : 'MISSING',
+    host: host,
+    alreadyInitialized: !!posthogInstance
+  })
+
+  if (!key) {
+    console.error('[PostHog Init] ERROR: NEXT_PUBLIC_POSTHOG_KEY is missing!')
+    return null
+  }
+
+  if (!posthogInstance) {
+    console.log('[PostHog Init] Calling posthog.init()...')
+
+    posthog.init(key, {
+      api_host: host,
 
       // LAUNCH Framework optimizations - session recording enabled
 
@@ -21,19 +43,27 @@ export function initPostHog() {
       capture_pageleave: true,
 
       loaded: (posthog) => {
+        console.log('[PostHog Init] Successfully loaded! PostHog is ready.')
+
         // Set LAUNCH Framework properties
         const variant = getCookie('localsphere_variant')
+        console.log('[PostHog Init] Variant cookie:', variant)
+
         if (variant) {
           posthog.register({
             localsphere_variant: variant,
             validation_test: true,
             test_start_date: new Date().toISOString().split('T')[0]
           })
+          console.log('[PostHog Init] Registered variant properties:', variant)
         }
       }
     })
 
     posthogInstance = posthog
+    console.log('[PostHog Init] PostHog instance created and stored')
+  } else {
+    console.log('[PostHog Init] Already initialized, returning existing instance')
   }
 
   return posthogInstance

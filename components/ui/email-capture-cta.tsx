@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { usePostHog } from "posthog-js/react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle, Loader2 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { initPostHog } from "@/lib/posthog"
 
 interface EmailCaptureCTAProps {
   variant: "timezone-freedom" | "information-findability" | "unified-productivity"
@@ -44,7 +44,6 @@ export function EmailCaptureCTA({
   className,
   section = "hero"
 }: EmailCaptureCTAProps) {
-  const posthog = usePostHog()
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -76,6 +75,7 @@ export function EmailCaptureCTA({
 
     try {
       // Track email capture attempt
+      const posthog = initPostHog()
       if (posthog) {
         posthog.capture('fake_door_email_capture_attempt', {
           variant,
@@ -108,8 +108,9 @@ export function EmailCaptureCTA({
       }
 
       // Track successful email capture
-      if (posthog) {
-        posthog.capture('fake_door_conversion', {
+      const posthogSuccess = initPostHog()
+      if (posthogSuccess) {
+        posthogSuccess.capture('fake_door_conversion', {
           variant,
           conversion_type: 'secondary_goal',
           launch_metric: 'email_signup',
@@ -125,8 +126,9 @@ export function EmailCaptureCTA({
       console.error('Email capture error:', error)
 
       // Track failed email capture
-      if (posthog) {
-        posthog.capture('fake_door_email_capture_failed', {
+      const posthogError = initPostHog()
+      if (posthogError) {
+        posthogError.capture('fake_door_email_capture_failed', {
           variant,
           section,
           email_domain: email.split('@')[1],
