@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { PHProvider } from "@/lib/analytics/posthog-provider";
+import { PostHogProvider } from "@/lib/analytics/posthog-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,9 +33,9 @@ export default function RootLayout({
         {/* PostHog Analytics initialized via PostHogProvider */}
       </head>
       <body className={inter.className}>
-        <PHProvider>
+        <PostHogProvider>
           {children}
-        </PHProvider>
+        </PostHogProvider>
       </body>
     </html>
   );
