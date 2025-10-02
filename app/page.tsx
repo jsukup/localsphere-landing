@@ -2,39 +2,51 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { initPostHog, trackValidationEvent } from "@/lib/posthog"
+import { usePostHog } from "posthog-js/react"
 
 export default function Home() {
   const router = useRouter()
+  const posthog = usePostHog()
 
   useEffect(() => {
-    // Initialize PostHog immediately
-    const posthog = initPostHog()
-
     // Track the landing on root before redirect
-    if (posthog) {
-      trackValidationEvent('landing_page_visit', {
-        source: 'root',
-        path: '/',
-        timestamp: new Date().toISOString()
-      })
+    const trackAndRedirect = async () => {
+      if (posthog) {
+        console.log('[Root Page] Tracking landing page visit')
+
+        // Track landing with all relevant context
+        posthog.capture('landing_page_visit', {
+          source: 'root',
+          path: '/',
+          timestamp: new Date().toISOString(),
+          referrer: document.referrer || 'direct',
+          user_agent: navigator.userAgent
+        })
+
+        // CRITICAL: Wait for event to be sent before redirecting
+        await new Promise(resolve => setTimeout(resolve, 500))
+      }
+
+      // Get variant from cookie or let middleware handle assignment
+      const variant = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('localsphere_variant='))
+        ?.split('=')[1]
+
+      if (variant) {
+        console.log('[Root Page] Redirecting to variant:', variant)
+        // Variant already assigned, redirect to it
+        router.push(`/validate/${variant}/variant-a`)
+      } else {
+        console.log('[Root Page] No variant, triggering middleware')
+        // Let middleware handle variant assignment
+        // This refresh will trigger middleware which will set cookie and redirect
+        router.refresh()
+      }
     }
 
-    // Get variant from cookie or let middleware handle assignment
-    const variant = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('localsphere_variant='))
-      ?.split('=')[1]
-
-    if (variant) {
-      // Variant already assigned, redirect to it
-      router.push(`/validate/${variant}/variant-a`)
-    } else {
-      // Let middleware handle variant assignment
-      // This refresh will trigger middleware which will set cookie and redirect
-      router.refresh()
-    }
-  }, [router])
+    trackAndRedirect()
+  }, [router, posthog])
 
   // Show loading state while redirecting
   return (

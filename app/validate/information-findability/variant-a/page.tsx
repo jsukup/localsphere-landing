@@ -1,91 +1,103 @@
 "use client"
 
 import { useEffect } from "react"
+import { usePostHog } from "posthog-js/react"
 import { HeroSection } from "@/components/landing/sections/hero-section"
 import { ProblemSection } from "@/components/landing/sections/problem-section"
 import { SolutionSection } from "@/components/landing/sections/solution-section"
 import { FeaturesSection } from "@/components/landing/sections/features-section"
 import { PricingSection } from "@/components/landing/sections/pricing-section"
 import { EmailCaptureCTA } from "@/components/ui/email-capture-cta"
-import { initPostHog, trackDemoRequest, trackValidationEvent, trackScrollDepth } from "@/lib/posthog"
 
 export default function InformationFindabilityVariantA() {
+  const posthog = usePostHog()
+
   useEffect(() => {
-    // Initialize PostHog for this page
-    const posthog = initPostHog()
+    if (!posthog) {
+      console.log('[Information Findability] PostHog not ready yet')
+      return
+    }
 
-    if (posthog) {
-      // Check if this is a new user (from middleware)
-      const isNewUser = document.cookie.includes('localsphere_new_user=true')
+    console.log('[Information Findability] PostHog ready, tracking events')
 
-      if (isNewUser) {
-        // Track variant assignment for new users
-        trackValidationEvent('variant_assigned', {
-          variant: 'information-findability',
-          assignment_type: 'new_user',
-          source: 'middleware'
-        })
+    const isNewUser = document.cookie.includes('localsphere_new_user=true')
 
-        // Remove the temporary cookie
-        document.cookie = 'localsphere_new_user=; Max-Age=0; path=/;'
-      }
-
-      // Track pageview
-      trackValidationEvent('validation_page_view', {
+    if (isNewUser) {
+      posthog.capture('variant_assigned', {
         variant: 'information-findability',
-        page: 'variant-a',
-        source: 'validation_landing',
-        is_new_user: isNewUser
+        assignment_type: 'new_user',
+        source: 'middleware'
       })
 
-      // Track scroll depth
-      const scrollCheckpoints = new Set<number>()
-
-      const handleScroll = () => {
-        const scrollPercent = Math.round(
-          (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
-        )
-
-        const milestones = [25, 50, 75, 100]
-        milestones.forEach(milestone => {
-          if (scrollPercent >= milestone && !scrollCheckpoints.has(milestone)) {
-            scrollCheckpoints.add(milestone)
-            trackScrollDepth('information-findability', milestone)
-          }
-        })
-      }
-
-      window.addEventListener('scroll', handleScroll)
-      return () => window.removeEventListener('scroll', handleScroll)
+      document.cookie = 'localsphere_new_user=; Max-Age=0; path=/;'
     }
-  }, [])
+
+    posthog.capture('$pageview', {
+      variant: 'information-findability',
+      page: 'variant-a',
+      source: 'validation_landing',
+      is_new_user: isNewUser,
+      $current_url: window.location.href
+    })
+
+    const scrollCheckpoints = new Set<number>()
+
+    const handleScroll = () => {
+      const scrollPercent = Math.round(
+        (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+      )
+
+      const milestones = [25, 50, 75, 100]
+      milestones.forEach(milestone => {
+        if (scrollPercent >= milestone && !scrollCheckpoints.has(milestone)) {
+          scrollCheckpoints.add(milestone)
+          posthog.capture('fake_door_section_engagement', {
+            variant: 'information-findability',
+            depth_percentage: milestone,
+            launch_metric: 'engagement_depth',
+            engagement_type: 'scroll'
+          })
+        }
+      })
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [posthog])
 
   const handleCtaClick = () => {
-    // Track demo request with PostHog
-    trackDemoRequest('information-findability', 'hero')
+    if (posthog) {
+      posthog.capture('fake_door_cta_interaction', {
+        variant: 'information-findability',
+        source: 'hero',
+        conversion_type: 'primary_goal',
+        launch_metric: 'cta_conversion',
+        cta_type: 'demo_request'
+      })
+      console.log('[Information Findability] CTA clicked and tracked')
+    }
 
-    // Show demo form (for now, just alert)
     alert("Demo request tracked! Information Findability variant")
   }
 
 
   return (
     <main className="min-h-screen">
-      <HeroSection 
+      <HeroSection
         variant="information-findability"
         headline="Find Any Decision, Update, or File in Seconds"
         subheadline="Stop digging through Slack threads, email chains, and shared drives forever. Ask LocalSphere any question about your work—'What's our Q3 budget?' or 'What did Mark decide about the redesign?'—and get instant, accurate answers from all your communication channels."
         onCtaClick={handleCtaClick}
       />
-      
+
       <ProblemSection variant="information-findability" />
-      
+
       <SolutionSection variant="information-findability" />
-      
+
       <FeaturesSection variant="information-findability" />
-      
+
       <PricingSection variant="information-findability" />
-      
+
       {/* Footer with trust elements */}
       <footer className="bg-gray-900 text-white py-12 px-4">
         <div className="max-w-6xl mx-auto text-center">
@@ -98,11 +110,11 @@ export default function InformationFindabilityVariantA() {
             <div>Money-Back Guarantee</div>
             <div>99.9% Uptime SLA</div>
           </div>
-          
+
           <p className="text-gray-400 mb-4">
             Join remote-first teams who&apos;ve eliminated information chaos with LocalSphere
           </p>
-          
+
           <div className="max-w-md mx-auto">
             <EmailCaptureCTA variant="information-findability" section="footer" />
           </div>

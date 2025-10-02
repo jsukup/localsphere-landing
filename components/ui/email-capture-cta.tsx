@@ -1,12 +1,11 @@
 "use client"
 
 import { useState } from "react"
+import { usePostHog } from "posthog-js/react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle, Loader2 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
-
-import { trackEmailCapture, trackValidationEvent } from "@/lib/posthog"
 
 interface EmailCaptureCTAProps {
   variant: "timezone-freedom" | "information-findability" | "unified-productivity"
@@ -39,12 +38,13 @@ const variantConfig = {
   }
 }
 
-export function EmailCaptureCTA({ 
-  variant, 
-  size = "default", 
+export function EmailCaptureCTA({
+  variant,
+  size = "default",
   className,
-  section = "hero" 
+  section = "hero"
 }: EmailCaptureCTAProps) {
+  const posthog = usePostHog()
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -76,14 +76,16 @@ export function EmailCaptureCTA({
 
     try {
       // Track email capture attempt
-      trackValidationEvent('fake_door_email_capture_attempt', {
-        variant,
-        section,
-        email_domain: email.split('@')[1],
-        cta_text: ctaText,
-        launch_metric: 'email_conversion',
-        conversion_type: 'email_signup'
-      })
+      if (posthog) {
+        posthog.capture('fake_door_email_capture_attempt', {
+          variant,
+          section,
+          email_domain: email.split('@')[1],
+          cta_text: ctaText,
+          launch_metric: 'email_conversion',
+          conversion_type: 'email_signup'
+        })
+      }
 
       // Call real email capture API
       const response = await fetch('/api/email-capture', {
@@ -106,23 +108,34 @@ export function EmailCaptureCTA({
       }
 
       // Track successful email capture
-      trackEmailCapture(variant, email)
-      
+      if (posthog) {
+        posthog.capture('fake_door_conversion', {
+          variant,
+          conversion_type: 'secondary_goal',
+          launch_metric: 'email_signup',
+          has_email: true,
+          section,
+          email_domain: email.split('@')[1]
+        })
+      }
+
       setIsSuccess(true)
       setEmail("")
     } catch (error) {
       console.error('Email capture error:', error)
-      
+
       // Track failed email capture
-      trackValidationEvent('fake_door_email_capture_failed', {
-        variant,
-        section,
-        email_domain: email.split('@')[1],
-        cta_text: ctaText,
-        error: error instanceof Error ? error.message : 'Unknown error',
-        launch_metric: 'email_conversion',
-        conversion_type: 'email_signup_failed'
-      })
+      if (posthog) {
+        posthog.capture('fake_door_email_capture_failed', {
+          variant,
+          section,
+          email_domain: email.split('@')[1],
+          cta_text: ctaText,
+          error: error instanceof Error ? error.message : 'Unknown error',
+          launch_metric: 'email_conversion',
+          conversion_type: 'email_signup_failed'
+        })
+      }
       setError("Something went wrong. Please try again.")
     } finally {
       setIsSubmitting(false)

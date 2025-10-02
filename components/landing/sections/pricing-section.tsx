@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
+import { usePostHog } from "posthog-js/react"
 import { AnimatedSection, AnimatedStagger, AnimatedStaggerItem } from "@/components/ui/animated-section"
 import { motion } from "framer-motion"
 import { Check, Star, Zap, Shield } from "lucide-react"
 import { EmailCaptureCTA } from "@/components/ui/email-capture-cta"
-import { trackPricingEngagement } from "@/lib/posthog"
 
 interface PricingSectionProps {
   variant: "timezone-freedom" | "information-findability" | "unified-productivity"
@@ -36,6 +36,7 @@ const variantStyles = {
 }
 
 export function PricingSection({ variant }: PricingSectionProps) {
+  const posthog = usePostHog()
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly")
   const styles = variantStyles[variant]
 
@@ -161,8 +162,28 @@ export function PricingSection({ variant }: PricingSectionProps) {
                     boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)"
                   }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  onMouseEnter={() => trackPricingEngagement(variant, plan.name.toLowerCase(), 'hover')}
-                  onClick={() => trackPricingEngagement(variant, plan.name.toLowerCase(), 'click')}
+                  onMouseEnter={() => {
+                    if (posthog) {
+                      posthog.capture('pricing_engagement', {
+                        variant,
+                        tier: plan.name.toLowerCase(),
+                        action: 'hover',
+                        launch_metric: 'pricing_interest',
+                        section: 'pricing'
+                      })
+                    }
+                  }}
+                  onClick={() => {
+                    if (posthog) {
+                      posthog.capture('pricing_engagement', {
+                        variant,
+                        tier: plan.name.toLowerCase(),
+                        action: 'click',
+                        launch_metric: 'pricing_interest',
+                        section: 'pricing'
+                      })
+                    }
+                  }}
                 >
                   {/* Popular Badge */}
                   {plan.popular && (
