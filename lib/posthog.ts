@@ -47,7 +47,8 @@ export function initPostHog() {
 
         // Set LAUNCH Framework properties
         const variant = getCookie('localsphere_variant')
-        console.log('[PostHog Init] Variant cookie:', variant)
+        const isNewUser = getCookie('localsphere_new_user') === 'true'
+        console.log('[PostHog Init] Variant cookie:', variant, 'isNewUser:', isNewUser)
 
         if (variant) {
           posthog.register({
@@ -56,6 +57,18 @@ export function initPostHog() {
             test_start_date: new Date().toISOString().split('T')[0]
           })
           console.log('[PostHog Init] Registered variant properties:', variant)
+
+          // Track feature flag exposure for new users (variant assignment)
+          if (isNewUser) {
+            posthog.capture('$feature_flag_called', {
+              $feature_flag: 'fake_door_localsphere',
+              $feature_flag_response: variant,
+              localsphere_variant: variant,
+              validation_test: true,
+              assignment_method: 'middleware_random'
+            })
+            console.log('[PostHog Init] Tracked feature flag exposure for variant:', variant)
+          }
         }
       }
     })
