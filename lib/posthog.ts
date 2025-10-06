@@ -51,12 +51,26 @@ export function initPostHog() {
         console.log('[PostHog Init] Variant cookie:', variant, 'isNewUser:', isNewUser)
 
         if (variant) {
+          // Capture UTM parameters from URL for attribution tracking
+          const urlParams = new URLSearchParams(window.location.search)
+          const utmSource = urlParams.get('utm_source')
+          const utmMedium = urlParams.get('utm_medium')
+          const utmCampaign = urlParams.get('utm_campaign')
+          const utmContent = urlParams.get('utm_content')
+          const utmTerm = urlParams.get('utm_term')
+
           posthog.register({
             localsphere_variant: variant,
             validation_test: true,
-            test_start_date: new Date().toISOString().split('T')[0]
+            test_start_date: new Date().toISOString().split('T')[0],
+            // UTM parameters for ad attribution
+            utm_source: utmSource,
+            utm_medium: utmMedium,
+            utm_campaign: utmCampaign,
+            utm_content: utmContent,
+            utm_term: utmTerm
           })
-          console.log('[PostHog Init] Registered variant properties:', variant)
+          console.log('[PostHog Init] Registered variant properties:', variant, 'UTM:', {utmSource, utmMedium, utmCampaign})
 
           // Track feature flag exposure for new users (variant assignment)
           if (isNewUser) {

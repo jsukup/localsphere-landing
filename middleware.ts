@@ -21,8 +21,13 @@ export function middleware(request: NextRequest) {
 
       variant = variants[Math.floor(Math.random() * variants.length)]
 
-      // Create response with redirect
-      const response = NextResponse.redirect(new URL(`/validate/${variant}/variant-a`, request.url))
+      // Create response with redirect, preserving UTM parameters and other query strings
+      const redirectUrl = new URL(`/validate/${variant}/variant-a`, request.url)
+      // Preserve all query parameters (UTM tracking, etc.)
+      url.searchParams.forEach((value, key) => {
+        redirectUrl.searchParams.set(key, value)
+      })
+      const response = NextResponse.redirect(redirectUrl)
 
       // Set variant cookie for returning users (httpOnly=false so client JS can read it)
       response.cookies.set('localsphere_variant', variant, {
@@ -51,8 +56,13 @@ export function middleware(request: NextRequest) {
 
       return response
     } else {
-      // Returning user - redirect to their assigned variant
-      return NextResponse.redirect(new URL(`/validate/${variant}/variant-a`, request.url))
+      // Returning user - redirect to their assigned variant, preserving UTM parameters
+      const redirectUrl = new URL(`/validate/${variant}/variant-a`, request.url)
+      // Preserve all query parameters (UTM tracking, etc.)
+      url.searchParams.forEach((value, key) => {
+        redirectUrl.searchParams.set(key, value)
+      })
+      return NextResponse.redirect(redirectUrl)
     }
   }
 
