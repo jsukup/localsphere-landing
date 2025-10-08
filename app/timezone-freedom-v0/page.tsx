@@ -4,7 +4,6 @@ import Header from "@/components/landing-page/header"
 import { EmailCaptureCTA } from "@/components/ui/email-capture-cta"
 import { ProblemSection } from "@/components/landing/sections/problem-section"
 import { SolutionSection } from "@/components/landing/sections/solution-section"
-import { FeaturesSection } from "@/components/landing/sections/features-section"
 import { PricingSection } from "@/components/landing/sections/pricing-section"
 
 export default function TimezoneFreedomV0() {

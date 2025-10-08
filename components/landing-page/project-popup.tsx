@@ -4,7 +4,28 @@ import { useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { X } from "lucide-react"
-import type { PortfolioItem } from "@/utils/csv-parser"
+
+// Local type definition (CSV parser removed during v0 migration)
+interface PortfolioItem {
+  id: string
+  title: string
+  description: string
+  shortDescription?: string
+  mainImage?: string
+  logo?: string
+  image?: string
+  link?: string
+  tags?: string[]
+  industry?: string
+  projectType?: string
+  completionDate?: string
+  clientTestimonial?: string
+  keyFeatures?: string[]
+  content?: string
+  projectUrl?: string
+  githubUrl?: string
+  slug?: string
+}
 
 interface ProjectPopupProps {
   project: PortfolioItem | null
@@ -87,7 +108,7 @@ export default function ProjectPopup({ project, onClose }: ProjectPopupProps) {
           </div>
 
           <div className="prose prose-lg dark:prose-invert max-w-none mt-6">
-            <div dangerouslySetInnerHTML={{ __html: project.content }} />
+            <div dangerouslySetInnerHTML={{ __html: project.content || '' }} />
           </div>
 
           <div className="mt-8 flex flex-wrap gap-4">
