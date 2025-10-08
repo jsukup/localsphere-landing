@@ -1,12 +1,39 @@
 "use client"
 
+import { useEffect } from "react"
 import Header from "@/components/landing-page/header"
 import { EmailCaptureCTA } from "@/components/ui/email-capture-cta"
 import { ProblemSection } from "@/components/landing/sections/problem-section"
 import { SolutionSection } from "@/components/landing/sections/solution-section"
 import { PricingSection } from "@/components/landing/sections/pricing-section"
+import { initPostHog } from "@/lib/posthog"
 
 export default function TimezoneFreedomV0() {
+  // Set variant cookie and register PostHog properties for v0 variant tracking
+  useEffect(() => {
+    // Set variant cookie (same as middleware does, but for v0 variant)
+    document.cookie = `localsphere_variant=timezone-freedom-v0; max-age=${60 * 60 * 24 * 30}; path=/; samesite=lax${process.env.NODE_ENV === 'production' ? '; secure' : ''}`
+
+    // Register PostHog properties
+    const posthog = initPostHog()
+    if (posthog) {
+      posthog.register({
+        localsphere_variant: 'timezone-freedom-v0',
+        validation_test: true,
+        test_start_date: new Date().toISOString().split('T')[0],
+        design_variant: 'v0',
+        comparison_test: 'original_vs_v0'
+      })
+
+      // Track page view with v0 variant
+      posthog.capture('$pageview', {
+        localsphere_variant: 'timezone-freedom-v0',
+        design_variant: 'v0',
+        page_path: '/timezone-freedom-v0'
+      })
+    }
+  }, [])
+
   return (
     <main className="min-h-screen bg-white dark:bg-[#111111]">
       <Header />
@@ -25,7 +52,7 @@ export default function TimezoneFreedomV0() {
                 Finally work in your timezone while staying perfectly synced with global teams. LocalSphere automatically coordinates across time zones, captures everything you miss, and keeps everyone updated—so you can work normal hours and still be a team player.
               </p>
               <div className="flex flex-wrap items-center gap-4">
-                <EmailCaptureCTA variant="timezone-freedom" section="hero" />
+                <EmailCaptureCTA variant="timezone-freedom-v0" section="hero" />
               </div>
               {/* Trust elements */}
               <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600 dark:text-gray-400 mt-6">
@@ -144,7 +171,7 @@ export default function TimezoneFreedomV0() {
               Join the waitlist and be among the first to experience timezone-free remote work.
             </p>
             <div className="flex justify-center">
-              <EmailCaptureCTA variant="timezone-freedom" section="cta" />
+              <EmailCaptureCTA variant="timezone-freedom-v0" section="cta" />
             </div>
           </div>
         </section>
@@ -168,7 +195,7 @@ export default function TimezoneFreedomV0() {
           </p>
 
           <div className="max-w-md mx-auto">
-            <EmailCaptureCTA variant="timezone-freedom" section="footer" />
+            <EmailCaptureCTA variant="timezone-freedom-v0" section="footer" />
           </div>
         </div>
       </footer>

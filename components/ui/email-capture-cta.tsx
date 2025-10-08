@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 import { initPostHog } from "@/lib/posthog"
 
 interface EmailCaptureCTAProps {
-  variant: "timezone-freedom" | "information-findability" | "unified-productivity"
+  variant: "timezone-freedom" | "timezone-freedom-v0" | "information-findability" | "unified-productivity"
   size?: "default" | "lg"
   className?: string
   section?: string
@@ -16,6 +16,13 @@ interface EmailCaptureCTAProps {
 
 const variantConfig = {
   "timezone-freedom": {
+    primary: "Join Waitlist",
+    secondary: "Join Waitlist",
+    placeholder: "Enter your work email",
+    colors: "from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700",
+    focusColors: "focus:ring-blue-500 border-blue-300"
+  },
+  "timezone-freedom-v0": {
     primary: "Join Waitlist",
     secondary: "Join Waitlist",
     placeholder: "Enter your work email",
