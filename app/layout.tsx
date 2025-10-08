@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 import { PostHogProvider } from "@/lib/analytics/posthog-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const outfit = Outfit({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-outfit",
+});
 
 export const metadata: Metadata = {
   title: "LocalSphere - AI-Powered Async Communication for Remote Teams",
@@ -32,10 +38,12 @@ export default function RootLayout({
       <head>
         {/* PostHog Analytics initialized via PostHogProvider */}
       </head>
-      <body className={inter.className}>
-        <PostHogProvider>
-          {children}
-        </PostHogProvider>
+      <body className={outfit.className}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <PostHogProvider>
+            {children}
+          </PostHogProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

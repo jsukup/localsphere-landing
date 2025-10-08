@@ -1,31 +1,130 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #111827;
+  --card: #f3f4f6;
+  --card-foreground: #111827;
+  --card-border: #e5e7eb;
+  --primary: #7a7fee;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #111827;
+  --muted: #6b7280;
+  --muted-foreground: #4b5563;
+  --accent: #f3f4f6;
+  --accent-foreground: #111827;
+  --border: #d1d5db;
+  --input: #d1d5db;
+  --ring: #7a7fee;
+  --radius: 0.75rem;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --background: #101112;
+  --foreground: #d9d9d9;
+  --card: #272829;
+  --card-foreground: #ffffff;
+  --card-border: #1a1a1a;
+  --primary: #7a7fee;
+  --primary-foreground: #ffffff;
+  --secondary: #272829;
+  --secondary-foreground: #ffffff;
+  --muted: #a1a1aa;
+  --muted-foreground: #d4d4d8;
+  --accent: #2a2a2a;
+  --accent-foreground: #ffffff;
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #7a7fee;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --popover: #272829;
+  --popover-foreground: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 1200px;
+  }
+
+  .card {
+    background-color: var(--card);
+    color: var(--card-foreground);
+    border: 1px solid var(--card-border);
+    @apply rounded-3xl overflow-hidden shadow-md;
+  }
+
+  .dark .card {
+    background-color: var(--card);
+    background-image: linear-gradient(to bottom, #2d2e2f, #272829);
+    position: relative;
+  }
+
+  .dark .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("/noise-texture.png");
+    background-size: 200px;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .btn-primary {
+    background-color: #7a7fee;
+    color: #ffffff;
+    @apply px-6 py-2.5 rounded-md hover:bg-opacity-90 transition-all text-sm font-medium shadow-sm;
+  }
+
+  .btn-secondary {
+    color: var(--foreground);
+    @apply hover:underline transition-all text-sm font-medium py-2.5;
+  }
+
+  .section-title {
+    @apply font-medium mb-2;
+    color: var(--foreground);
+  }
+
+  .section-subtitle {
+    color: #7a7fee;
+    @apply font-medium mb-6;
+  }
+
+  .accent-text {
+    color: #7a7fee;
+  }
 }
 
-/* Text Effect Utilities */
+/* Preserve existing text effects */
 .text-shadow-lg {
   text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }

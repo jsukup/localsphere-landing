@@ -175,7 +175,7 @@ export function EmailCaptureCTA({
             className={cn(
               "w-full px-4 rounded-lg border-2 transition-all duration-200",
               "focus:outline-none focus:ring-2 focus:ring-offset-2",
-              "placeholder-gray-600 text-gray-900 font-medium",
+              "bg-white placeholder-gray-600 text-gray-900 font-medium",
               config.focusColors,
               error ? "border-red-300 focus:ring-red-500" : "border-gray-300",
               size === "lg" ? "text-lg py-4 h-14" : "py-3 h-11"
