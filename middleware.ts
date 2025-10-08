@@ -78,7 +78,8 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - validate (already specific variant paths)
+     * - timezone-freedom-v0 (v0 design migration test page)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|validate).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|validate|timezone-freedom-v0).*)',
   ],
 }
